@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Expenses</string>
+    <string name="cash_flow">Cash Flow</string>
+    <string name="net_balance">NET BALANCE</string>
+    <string name="add_transaction">Add Transaction</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="before_you_begin">Before you Begin...</string>
+    <string name="name">Name</string>
+    <string name="salary">Monthly Income</string>
+    <string name="save">Save</string>
+    <string name="budget">Monthly Budget</string>
+</resources>
