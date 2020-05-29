@@ -11,4 +11,8 @@
     <string name="salary">Monthly Income</string>
     <string name="save">Save</string>
     <string name="budget">Monthly Budget</string>
+    <string name="comments">* Comments</string>
+    <string name="dummy_date">9/June</string>
+    <string name="month_dummy">Month</string>
+    <string name="item_dummy">Item</string>
 </resources>

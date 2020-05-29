@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="32dp"
+    app:cardElevation="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/month"
+            android:text="@string/month_dummy"
+            android:background="@color/colorTextIncome"
+            android:textColor="@color/colorText"
+            android:textStyle="bold"
+            android:textSize="48sp"
+            android:padding="24dp"
+            android:gravity="center_horizontal"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:minHeight="120dp"
+            android:layout_height="match_parent"/>
+        <LinearLayout
+            android:padding="48dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/expenses"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:textStyle="bold"
+                android:textColor="@color/colorTextIncome"
+                android:gravity="right"
+                android:textSize="16sp"
+                android:text="Total"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
