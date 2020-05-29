@@ -4,11 +4,13 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.lifecycle.AndroidViewModel
-import com.example.expenses.database.dataclasses.UserDetails
+import com.example.expenses.repository.ExpenseRepository
+import com.example.expenses.repository.data.UserDetails
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val sharedPref: SharedPreferences
+    private val repository: ExpenseRepository = ExpenseRepository(getApplication())
     private lateinit var userDetails: UserDetails
 
     init {

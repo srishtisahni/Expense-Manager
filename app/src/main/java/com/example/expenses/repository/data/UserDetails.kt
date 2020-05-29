@@ -1,4 +1,4 @@
-package com.example.expenses.database.dataclasses
+package com.example.expenses.repository.data
 
 data class UserDetails(
     val name: String?,

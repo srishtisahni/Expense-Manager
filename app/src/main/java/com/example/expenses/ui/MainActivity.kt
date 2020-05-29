@@ -1,6 +1,5 @@
 package com.example.expenses.ui
 
-import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -8,7 +7,7 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.example.expenses.R
-import com.example.expenses.database.dataclasses.UserDetails
+import com.example.expenses.repository.data.UserDetails
 import com.example.expenses.ui.callbacks.ActivityCallback
 import com.example.expenses.viewmodels.MainViewModel
 
