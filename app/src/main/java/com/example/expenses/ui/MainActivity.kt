@@ -2,14 +2,18 @@ package com.example.expenses.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.example.expenses.R
+import com.example.expenses.repository.data.TransactionCollection
+import com.example.expenses.repository.data.Transactions
 import com.example.expenses.repository.data.UserDetails
 import com.example.expenses.ui.callbacks.ActivityCallback
 import com.example.expenses.viewmodels.MainViewModel
+import java.util.*
 
 
 class MainActivity : AppCompatActivity(), ActivityCallback {
@@ -48,4 +52,9 @@ class MainActivity : AppCompatActivity(), ActivityCallback {
         model.updateUserInfo(UserDetails( name, income, budget, 0f))
         navigateTo(R.id.action_loginFragment_to_homeFragment)
     }
+
+    override fun fetchBalance(): String = model.userBalanceAsString()
+    override fun fetchReminder(): LiveData<List<Transactions>> = model.getReminders()
+    override fun fetchCollections(): LiveData<List<TransactionCollection>> = model.getCollections()
+    override fun addNewCollection(): Boolean = model.addCollection(Calendar.getInstance().timeInMillis)
 }

@@ -50,6 +50,7 @@
             android:layout_height="120dp"
             android:layout_margin="16dp"
             android:padding="8dp"
+            tools:listitem="@layout/list_item_notification"
             android:background="@color/colorPrimary27"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -71,17 +72,55 @@
             app:layout_constraintTop_toTopOf="@+id/reminders"
             app:layout_constraintVertical_bias="0.0" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/monthList"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="16dp"
             android:paddingHorizontal="16dp"
-            android:paddingTop="24dp"
+            android:paddingTop="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:background="@drawable/list_home"
-            app:layout_constraintTop_toBottomOf="@+id/addReminder" />
+            app:layout_constraintTop_toBottomOf="@+id/addReminder" >
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/addMonth"
+                    android:layout_margin="12dp"
+                    android:layout_width="match_parent"
+                    app:cardCornerRadius="40dp"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_margin="4dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_add_circle_primary_32dp" />
+                        <TextView
+                            android:layout_weight="3"
+                            android:layout_width="0dp"
+                            android:layout_marginVertical="16dp"
+                            android:text="@string/add_month_card"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="30sp"
+                            android:textStyle="bold"
+                            android:gravity="center_vertical"
+                            android:layout_height="match_parent"/>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/monthList"
+                    tools:listitem="@layout/list_item_month"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

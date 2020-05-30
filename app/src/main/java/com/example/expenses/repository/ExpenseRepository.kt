@@ -11,12 +11,18 @@ class ExpenseRepository(context: Context) {
 
     fun getCollection() : LiveData<List<TransactionCollection>> = database.getDao().getCollection()
 
-    fun getTransactionsForExpense(expenseId: Int): LiveData<List<Transactions>> = database.getDao().getTransactionsForExpense(expenseId)
+    fun getTransactionsForExpense(expenseTitle: String): LiveData<List<Transactions>> = database.getDao().getTransactions(expenseTitle)
 
-    fun getTransactionsForCollection(collectionId: Int): LiveData<List<Transactions>> = database.getDao().getTransactionsForCollection(collectionId)
+    fun getTransactionsForCollection(collectionId: Int): LiveData<List<Transactions>> = database.getDao().getTransactions(collectionId)
+
+    fun getPendingTransactions(): LiveData<List<Transactions>> = database.getDao().getPendingTransactions()
 
     fun completeExpense(transaction: Transactions) {
         transaction.completed = true
         database.getDao().updateTransaction(transaction)
+    }
+
+    fun addCollection(transactionCollection: TransactionCollection) {
+        database.getDao().addCollection(transactionCollection)
     }
 }

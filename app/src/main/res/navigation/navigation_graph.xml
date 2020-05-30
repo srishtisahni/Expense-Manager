@@ -23,6 +23,10 @@
             android:id="@+id/action_homeFragment_to_monthFragment"
             app:destination="@id/monthFragment"
             app:popUpTo="@id/homeFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_addFragment"
+            app:destination="@id/addFragment"
+            app:popUpTo="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/monthFragment"
@@ -32,5 +36,13 @@
         <argument
             android:name="id"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_monthFragment_to_addFragment"
+            app:destination="@id/addFragment"
+            app:popUpTo="@id/monthFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/addFragment"
+        android:name="com.example.expenses.ui.fragments.AddFragment"
+        android:label="AddFragment" />
 </navigation>

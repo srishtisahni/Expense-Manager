@@ -24,6 +24,7 @@ class LoginFragment : Fragment() {
     private lateinit var salary: EditText
     private lateinit var budget: EditText
     private lateinit var save: Button
+
     private lateinit var mCallback: ActivityCallback
 
     override fun onCreateView(

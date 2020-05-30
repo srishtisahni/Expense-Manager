@@ -4,8 +4,13 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import com.example.expenses.Constants
 import com.example.expenses.repository.ExpenseRepository
+import com.example.expenses.repository.data.TransactionCollection
+import com.example.expenses.repository.data.Transactions
 import com.example.expenses.repository.data.UserDetails
+import java.util.*
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -41,6 +46,22 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             putBoolean(EXISTS, true)
             commit()
         }
+    }
+
+    fun userBalanceAsString(): String = Constants.numberFormat.format(userDetails.balance)
+    fun getReminders(): LiveData<List<Transactions>> = repository.getPendingTransactions()
+    fun getCollections(): LiveData<List<TransactionCollection>> = repository.getCollection()
+    fun addCollection(timeInMillis: Long): Boolean {
+        val c = Calendar.getInstance()
+        c.time = Date(timeInMillis)
+        val month = c[Calendar.MONTH]
+        val year = c[Calendar.YEAR]
+        if(!sharedPref.getBoolean("$month/$year",false)){
+            sharedPref.edit().putBoolean("$month/$year", true).apply()
+            repository.addCollection(TransactionCollection(month = month, year = year))
+            return true
+        }
+        return false
     }
 
 

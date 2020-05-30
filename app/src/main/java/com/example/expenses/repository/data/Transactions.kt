@@ -6,8 +6,8 @@ import androidx.room.PrimaryKey
 
 @Entity(foreignKeys = arrayOf(
     ForeignKey(entity = Expense::class,
-    parentColumns = arrayOf("id"),
-    childColumns = arrayOf("expenseId"),
+    parentColumns = arrayOf("name"),
+    childColumns = arrayOf("expenseTitle"),
     onDelete = ForeignKey.CASCADE),
     ForeignKey(entity = TransactionCollection::class,
         parentColumns = arrayOf("id"),
@@ -15,8 +15,8 @@ import androidx.room.PrimaryKey
         onDelete = ForeignKey.CASCADE)))
 data class Transactions(
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
-    val expenseId: Int,
+    val id: Int = 0,
+    val expenseTitle: String,
     val collectionId: Int,
     val comments: String,
     val amount: Float,

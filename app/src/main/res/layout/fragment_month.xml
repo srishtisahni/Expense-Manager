@@ -127,6 +127,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/expenses"
+            tools:listitem="@layout/list_item"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="16dp"
