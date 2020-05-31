@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.expenses.Constants
 import com.example.expenses.R
 import com.example.expenses.repository.data.TransactionCollection
-import com.example.expenses.repository.data.Transactions
+import java.util.*
 
 class MonthAdapter(private val mCallback: AdapterCallback, private val context: Context, private val list: List<TransactionCollection>) : ListAdapter<TransactionCollection, MonthAdapter.MonthViewHolder>(DiffCallback()) {
 
@@ -23,10 +23,12 @@ class MonthAdapter(private val mCallback: AdapterCallback, private val context: 
 
     override fun onBindViewHolder(holder: MonthViewHolder, position: Int) {
         val item = list[position]
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = item.date
 
-        holder.month.text = "${Constants.getMonth(item.month)}\n${item.year}"
+        holder.month.text = "${calendar[Calendar.MONTH]}"
         holder.total.text = Constants.currencyFormat.format(item.balanceAmount)
-        val transactionTextAdapter = TransactionTextAdapter(context, item.transactions, R.layout.list_item_text)
+        val transactionTextAdapter = TransactionTextAdapter(context, item.transactions)
 
         with(holder.expensesList){
             adapter = transactionTextAdapter

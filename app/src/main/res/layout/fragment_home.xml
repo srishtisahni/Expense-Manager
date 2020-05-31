@@ -50,7 +50,7 @@
             android:layout_height="120dp"
             android:layout_margin="16dp"
             android:padding="8dp"
-            tools:listitem="@layout/list_item_notification"
+            tools:listitem="@layout/list_item_reminder"
             android:background="@color/colorPrimary27"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -1,6 +1,8 @@
 package com.example.expenses.ui.fragments
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,9 +15,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.example.expenses.R
+import com.example.expenses.repository.data.Reminders
 import com.example.expenses.repository.data.TransactionCollection
-import com.example.expenses.repository.data.Transactions
 import com.example.expenses.ui.adapters.MonthAdapter
+import com.example.expenses.ui.adapters.ReminderAdapter
 import com.example.expenses.ui.adapters.TransactionTextAdapter
 import com.example.expenses.ui.callbacks.ActivityCallback
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -63,9 +66,24 @@ class HomeFragment : Fragment(){
 
     private fun setUpAdapters() {
         //reminders
-        val reminders = mutableListOf<Transactions>()
+        val reminders = mutableListOf<Reminders>()
         with(remindersList) {
-            val reminderAdapter = TransactionTextAdapter(context, reminders, R.layout.list_item_notification)
+            val reminderAdapter = ReminderAdapter(object: ReminderAdapter.AdapterCallback{
+                override fun onClick(reminder: Reminders) {
+                    val builder = AlertDialog.Builder(context)
+                    with(builder) {
+                        setTitle("Complete Transaction")
+                        setMessage("Do you want to mark the Transaction as Completed?")
+                        setPositiveButton("Yes", DialogInterface.OnClickListener{ _: DialogInterface, _: Int ->
+                            mCallback.completeTransaction(reminder)
+                        })
+                        setNegativeButton("No", DialogInterface.OnClickListener{ _: DialogInterface, _: Int ->
+
+                        })
+                        show()
+                    }
+                }
+            }, reminders)
             mCallback.fetchReminders(reminders, reminderAdapter)
             adapter = reminderAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -100,7 +118,7 @@ class HomeFragment : Fragment(){
         }
 
         addReminder.setOnClickListener {
-            //TODO Open Add Fragment
+            mCallback.navigateToRemindersFragment()
         }
     }
 

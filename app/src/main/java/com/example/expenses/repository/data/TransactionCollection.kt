@@ -8,7 +8,7 @@ import com.example.expenses.Constants
 @Entity
 data class TransactionCollection(
     val month: Int,
-    val year: Int,
+    val year:Int,
     var balanceAmount: Float = 0f
 ) {
     @Ignore
@@ -17,7 +17,7 @@ data class TransactionCollection(
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0
 
-    constructor(id: Long, month: Int, year: Int, balanceAmount: Float = 0f) : this(month, year, balanceAmount) {
+    constructor(id: Long, month:Int, year:Int , balanceAmount: Float = 0f) : this(month, year , balanceAmount) {
         this.id = id
     }
 

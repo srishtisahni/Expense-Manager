@@ -1,42 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/colorPrimaryLight"
-    android:padding="32dp"
+    android:background="@color/colorPrimaryDark"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/title_header"
+        android:id="@+id/heading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
         android:shadowColor="@color/colorTextShadow"
-        android:text="@string/title"
-        android:textColor="@color/colorPrimary"
-        android:textSize="16sp"
+        android:text="@string/transaction_details"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.10" />
+
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        app:cardBackgroundColor="@color/colorPrimary"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        app:cardBackgroundColor="@color/colorPrimaryLight"
         app:cardCornerRadius="20dp"
         app:cardElevation="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/title_header"
-        app:layout_constraintTop_toBottomOf="@+id/title_header"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/heading"
+        app:layout_constraintVertical_bias="0.08">
 
         <EditText
             android:id="@+id/title"
@@ -44,83 +42,53 @@
             android:layout_height="match_parent"
             android:layout_margin="8dp"
             android:background="@android:color/transparent"
-            android:paddingHorizontal="20dp"
-            android:textColor="@color/colorPrimaryLight"
-            android:textSize="22sp" />
+            android:hint="@string/title"
+            android:paddingHorizontal="16dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="18sp" />
     </androidx.cardview.widget.CardView>
 
-    <TextView
-        android:id="@+id/amount_header"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:layout_marginTop="16dp"
-        android:shadowColor="@color/colorTextShadow"
-        android:textColor="@color/colorPrimary"
-        android:text="@string/amount"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView"
-        app:layout_constraintVertical_bias="0.0" />
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView1"
         android:layout_width="240dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        app:cardBackgroundColor="@color/colorPrimary"
+        android:layout_marginTop="16dp"
+        app:cardBackgroundColor="@color/colorPrimaryLight"
         app:cardCornerRadius="20dp"
         app:cardElevation="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/cardView"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/amount_header"
-        app:layout_constraintTop_toBottomOf="@+id/amount_header"
+        app:layout_constraintStart_toStartOf="@+id/cardView"
+        app:layout_constraintTop_toBottomOf="@+id/cardView"
         app:layout_constraintVertical_bias="0.0">
 
         <EditText
             android:id="@+id/amount"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:inputType="number"
             android:layout_margin="8dp"
             android:background="@android:color/transparent"
-            android:paddingHorizontal="20dp"
-            android:textColor="@color/colorPrimaryLight"
-            android:textSize="22sp" />
+            android:inputType="number"
+            android:paddingHorizontal="16dp"
+            android:hint="@string/amount"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="18sp" />
     </androidx.cardview.widget.CardView>
 
-    <TextView
-        android:id="@+id/date_header"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:layout_marginTop="16dp"
-        android:shadowColor="@color/colorTextShadow"
-        android:textColor="@color/colorPrimary"
-        android:text="@string/date"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView1"
-        app:layout_constraintVertical_bias="0.0" />
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView2"
         android:layout_width="240dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        app:cardBackgroundColor="@color/colorPrimary"
+        android:layout_marginTop="16dp"
+        app:cardBackgroundColor="@color/colorPrimaryLight"
         app:cardCornerRadius="20dp"
         app:cardElevation="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/cardView"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/date_header"
-        app:layout_constraintTop_toBottomOf="@+id/date_header"
+        app:layout_constraintStart_toStartOf="@+id/cardView1"
+        app:layout_constraintTop_toBottomOf="@+id/cardView1"
         app:layout_constraintVertical_bias="0.0">
 
         <TextView
@@ -129,41 +97,24 @@
             android:layout_height="match_parent"
             android:layout_margin="8dp"
             android:background="@android:color/transparent"
-            android:paddingHorizontal="20dp"
-            android:textColor="@color/colorPrimaryLight"
-            android:textSize="22sp" />
+            android:paddingHorizontal="16dp"
+            android:hint="@string/date"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="18sp" />
     </androidx.cardview.widget.CardView>
-
-    <TextView
-        android:id="@+id/comments_header"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:layout_marginTop="16dp"
-        android:shadowColor="@color/colorTextShadow"
-        android:textColor="@color/colorPrimary"
-        android:text="@string/comments"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView2"
-        app:layout_constraintVertical_bias="0.0" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView3"
         android:layout_width="0dp"
         android:layout_height="100dp"
-        android:layout_marginTop="4dp"
-        app:cardBackgroundColor="@color/colorPrimary"
+        android:layout_marginTop="16dp"
+        app:cardBackgroundColor="@color/colorPrimaryLight"
         app:cardCornerRadius="20dp"
         app:cardElevation="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/comments_header"
-        app:layout_constraintTop_toBottomOf="@+id/comments_header"
+        app:layout_constraintEnd_toEndOf="@+id/cardView"
+        app:layout_constraintStart_toStartOf="@+id/cardView2"
+        app:layout_constraintTop_toBottomOf="@+id/cardView2"
         app:layout_constraintVertical_bias="0.0">
 
         <EditText
@@ -171,19 +122,22 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="8dp"
+            android:gravity="top"
             android:background="@android:color/transparent"
-            android:paddingHorizontal="20dp"
-            android:textColor="@color/colorPrimaryLight"
-            android:textSize="22sp" />
+            android:paddingHorizontal="16dp"
+            android:hint="@string/comments"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="18sp" />
     </androidx.cardview.widget.CardView>
 
     <Button
         android:id="@+id/add_income"
-        android:layout_width="150dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="64dp"
-        android:background="@drawable/button_solid"
+        android:background="@drawable/button_solid_light"
         android:text="@string/income"
+        android:textSize="24sp"
+        android:paddingHorizontal="30dp"
         android:textAllCaps="false"
         android:textColor="@color/colorPrimaryLight"
         android:textStyle="bold"
@@ -192,14 +146,16 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/cardView3"
         app:layout_constraintTop_toBottomOf="@+id/cardView3"
-        app:layout_constraintVertical_bias="0.22000003" />
+        app:layout_constraintVertical_bias="0.25" />
 
     <Button
         android:id="@+id/add_expense"
-        android:layout_width="150dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/button_solid"
+        android:background="@drawable/button_solid_light"
         android:text="@string/expense"
+        android:textSize="24sp"
+        android:paddingHorizontal="30dp"
         android:textAllCaps="false"
         android:textColor="@color/colorPrimaryLight"
         android:textStyle="bold"

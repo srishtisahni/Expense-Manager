@@ -9,10 +9,12 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.example.expenses.Constants
 import com.example.expenses.R
+import com.example.expenses.repository.data.Reminders
 import com.example.expenses.repository.data.TransactionCollection
 import com.example.expenses.repository.data.Transactions
 import com.example.expenses.repository.data.UserDetails
 import com.example.expenses.ui.adapters.MonthAdapter
+import com.example.expenses.ui.adapters.ReminderAdapter
 import com.example.expenses.ui.adapters.TransactionTextAdapter
 import com.example.expenses.ui.callbacks.ActivityCallback
 import com.example.expenses.viewmodels.MainViewModel
@@ -40,12 +42,19 @@ class MainActivity : AppCompatActivity(), ActivityCallback {
         }
     }
 
-    private fun navigateTo(navigationId: Int) {
-        navigationController.navigate(navigationId)
+    private fun navigateTo(navigationId: Int, bundle: Bundle? = null) {
+        navigationController.navigate(navigationId, bundle)
         with(supportActionBar!!) {
-            show()
             setDisplayHomeAsUpEnabled(false)
-            title = "Expenses"
+            title = when(navigationId) {
+                R.id.action_monthFragment_to_addFragment -> getString(R.string.add_transaction)
+                R.id.action_homeFragment_to_addFragment -> {
+                    getString(R.string.add_reminder)
+                }
+                else -> {
+                    getString(R.string.app_name)
+                }
+            }
         }
     }
 
@@ -57,8 +66,8 @@ class MainActivity : AppCompatActivity(), ActivityCallback {
     }
 
     override fun fetchReminders(
-        reminders: MutableList<Transactions>,
-        reminderAdapter: TransactionTextAdapter
+        reminders: MutableList<Reminders>,
+        reminderAdapter: ReminderAdapter
     ){
         model.getReminders().observe(this, androidx.lifecycle.Observer {
             if(it != null) {
@@ -84,7 +93,9 @@ class MainActivity : AppCompatActivity(), ActivityCallback {
     }
 
     override fun addNewCollection(): Boolean {
-        val liveData = model.addCollection(Calendar.getInstance().timeInMillis)
+        val calendar = Calendar.getInstance()
+        calendar[Calendar.DATE] = 1
+        val liveData = model.addCollection(calendar.timeInMillis)
         if(liveData == null){
             return false
         } else {
@@ -115,5 +126,24 @@ class MainActivity : AppCompatActivity(), ActivityCallback {
                 balanceAmount.text = Constants.currencyFormat.format(it.balance)
             }
         })
+    }
+
+    override fun navigateToRemindersFragment() {
+        navigateTo(R.id.action_homeFragment_to_addFragment)
+    }
+
+    override fun addTransactionForCollection(transactions: Transactions) {
+        model.addTransaction(transactions)
+        navigationController.popBackStack(R.id.monthFragment, false)
+
+    }
+
+    override fun addReminder(reminders: Reminders) {
+        model.addReminder(reminders)
+        navigationController.popBackStack(R.id.homeFragment, false)
+    }
+
+    override fun completeTransaction(reminder: Reminders) {
+        model.completeTransaction(reminder)
     }
 }

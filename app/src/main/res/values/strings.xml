@@ -2,10 +2,6 @@
     <string name="app_name">Expenses</string>
     <string name="cash_flow">Cash Flow</string>
     <string name="net_balance">NET BALANCE</string>
-    <string name="add_transaction">Add Transaction</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="before_you_begin">Before you Begin...</string>
     <string name="name">Name</string>
     <string name="salary">Monthly Income</string>
@@ -22,4 +18,7 @@
     <string name="date">Date</string>
     <string name="income">Income</string>
     <string name="expense">Expense</string>
+    <string name="add_reminder">Add Reminder</string>
+    <string name="add_transaction">Add Transaction</string>
+    <string name="transaction_details">Transaction Details</string>
 </resources>

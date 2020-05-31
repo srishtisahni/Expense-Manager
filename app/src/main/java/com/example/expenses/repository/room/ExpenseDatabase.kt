@@ -4,11 +4,11 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.expenses.repository.data.Reminders
 import com.example.expenses.repository.data.TransactionCollection
-import com.example.expenses.repository.data.Expense
 import com.example.expenses.repository.data.Transactions
 
-@Database(entities = arrayOf(TransactionCollection::class, Expense::class, Transactions::class),
+@Database(entities = [TransactionCollection::class, Reminders::class, Transactions::class],
             exportSchema = false,
             version = 1)
 abstract class ExpenseDatabase : RoomDatabase() {

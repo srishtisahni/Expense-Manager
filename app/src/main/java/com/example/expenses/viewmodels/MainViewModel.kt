@@ -8,7 +8,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.expenses.Constants
 import com.example.expenses.repository.ExpenseRepository
-import com.example.expenses.repository.data.Expense
+import com.example.expenses.repository.data.Reminders
 import com.example.expenses.repository.data.TransactionCollection
 import com.example.expenses.repository.data.Transactions
 import com.example.expenses.repository.data.UserDetails
@@ -21,7 +21,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val userDetails: MutableLiveData<UserDetails> = MutableLiveData()
     private val collectionTransactions: MutableMap<Long, LiveData<List<Transactions>>> = mutableMapOf()
-    private lateinit var pendingTransactions: LiveData<List<Transactions>>
+    private lateinit var reminders: LiveData<List<Reminders>>
     private lateinit var collections: LiveData<List<TransactionCollection>>
 
     init {
@@ -29,12 +29,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         repository = ExpenseRepository.getInstance(getApplication())
         if(isOldUser())
             fetchUserDetails()
-        else
-            createExpense(SALARY)
-    }
-
-    private fun createExpense(name: String) {
-        repository.addExpense(Expense(name))
     }
 
     private fun fetchUserDetails() {
@@ -61,10 +55,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun getReminders(): LiveData<List<Transactions>> {
-        if(!this::pendingTransactions.isInitialized)
-            pendingTransactions = repository.getPendingTransactions()
-        return pendingTransactions
+    fun getReminders(): LiveData<List<Reminders>> {
+        if(!this::reminders.isInitialized)
+            reminders = repository.getReminders()
+        return reminders
     }
 
     fun getCollections(): LiveData<List<TransactionCollection>> {
@@ -80,21 +74,20 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun addCollection(timeInMillis: Long): LiveData<TransactionCollection>? {
-        val c = Calendar.getInstance()
-        c.time = Date(timeInMillis)
-        val month = c[Calendar.MONTH]
-        val year = c[Calendar.YEAR]
-        if(!sharedPref.getBoolean("$month/$year",false)){
-            sharedPref.edit().putBoolean("$month/$year", true).apply()
-            return repository.addCollection(TransactionCollection(month = month, year = year))
+        val calendar = Calendar.getInstance()
+        calendar.time = Date(timeInMillis)
+        if(!sharedPref.getBoolean("${calendar[Calendar.MONTH]}/${calendar[Calendar.YEAR]}",false)){
+            sharedPref.edit().putBoolean("${calendar[Calendar.MONTH]}/${calendar[Calendar.YEAR]}",true).apply()
+            return repository.addCollection(TransactionCollection(calendar[Calendar.MONTH], calendar[Calendar.YEAR]))
         }
         return null
     }
 
     fun addSalaryTransaction(collection: TransactionCollection) {
-        val date = Calendar.getInstance()
-        date.set(collection.year, collection.month, 1)
-        val transactions = Transactions(SALARY, collection.id, "", userDetails.value!!.salary, date.timeInMillis,Constants.INCOME, true)
+        sharedPref.edit().putLong("${collection.month}/${collection.year}id",collection.id).apply()
+        val calendar = Calendar.getInstance()
+        calendar.set(collection.year,collection.month, 1)
+        val transactions = Transactions(SALARY, collection.id, "", userDetails.value!!.salary, calendar.timeInMillis,Constants.INCOME)
         repository.addTransaction(transactions)
     }
 
@@ -114,6 +107,21 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun getUser(): LiveData<UserDetails> = userDetails
+
+    fun addTransaction(transaction: Transactions) {
+        repository.addTransaction(transaction)
+    }
+
+    fun addReminder(reminder: Reminders) {
+        repository.addReminder(reminder)
+    }
+
+    fun completeTransaction(reminder: Reminders) {
+        val calendar = Calendar.getInstance()
+        repository.deleteReminder(reminder)
+        val transactions = Transactions(reminder, sharedPref.getLong("${calendar[Calendar.MONTH]}/${calendar[Calendar.YEAR]}id",-1))
+        repository.addTransaction(transactions)
+    }
 
 
     companion object{
