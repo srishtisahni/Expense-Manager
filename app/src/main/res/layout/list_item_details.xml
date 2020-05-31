@@ -17,7 +17,7 @@
             android:layout_weight="1"
             android:gravity="bottom"
             android:text="@string/dummy_date"
-            android:textColor="@color/colorTextIncome"
+            android:textColor="@color/colorIncome"
             android:textSize="20sp" />
 
         <TextView
@@ -27,7 +27,7 @@
             android:layout_weight="1"
             android:gravity="right|bottom"
             android:text="-3,456"
-            android:textColor="@color/colorTextIncome"
+            android:textColor="@color/colorIncome"
             android:textSize="30sp" />
     </LinearLayout>
 
@@ -37,11 +37,11 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
         android:text="@string/comments"
-        android:textColor="@color/colorTextIncome"
+        android:textColor="@color/colorIncome"
         android:textSize="14sp" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="@color/colorTextIncome" />
+        android:background="@color/colorIncome" />
 </LinearLayout>

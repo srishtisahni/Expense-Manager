@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -17,14 +16,14 @@ import com.example.expenses.R
 import com.example.expenses.repository.data.TransactionCollection
 import com.example.expenses.repository.data.Transactions
 import com.example.expenses.ui.adapters.MonthAdapter
-import com.example.expenses.ui.adapters.ReminderAdapter
+import com.example.expenses.ui.adapters.TransactionTextAdapter
 import com.example.expenses.ui.callbacks.ActivityCallback
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 /**
  * A simple [Fragment] subclass.
  */
-class HomeFragment : Fragment(), MonthAdapter.AdapterCallback {
+class HomeFragment : Fragment(){
 
     private lateinit var rootLayout: View
     private lateinit var balanceAmount: TextView
@@ -49,6 +48,10 @@ class HomeFragment : Fragment(), MonthAdapter.AdapterCallback {
             monthsList = findViewById(R.id.monthList)
         }
 
+        setUpAdapters()
+        setUpClickListeners()
+        mCallback.setBalance(balanceAmount)
+
         return rootLayout
     }
 
@@ -56,39 +59,35 @@ class HomeFragment : Fragment(), MonthAdapter.AdapterCallback {
         super.onAttach(context)
         if(context is ActivityCallback)
             mCallback = context
-
-        setUpAdapters(context)
-        setUpClickListeners()
-        balanceAmount.text = mCallback.fetchBalance()
     }
 
-    private fun setUpAdapters(context: Context) {
+    private fun setUpAdapters() {
         //reminders
         val reminders = mutableListOf<Transactions>()
-        val reminderAdapter = ReminderAdapter(context, reminders)
-        mCallback.fetchReminder().observe(this, Observer {
-            if(it != null) {
-                reminders.clear()
-                reminders.addAll(it)
-                reminderAdapter.notifyDataSetChanged()
-            }
-        })
         with(remindersList) {
+            val reminderAdapter = TransactionTextAdapter(context, reminders, R.layout.list_item_notification)
+            mCallback.fetchReminders(reminders, reminderAdapter)
             adapter = reminderAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         }
 
         //months
         val collections = mutableListOf<TransactionCollection>()
-        val monthAdapter = MonthAdapter(this, collections)
-        mCallback.fetchCollections().observe(this, Observer {
-            if(it!=null) {
-                collections.clear()
-                collections.addAll(it)
-                monthAdapter.notifyDataSetChanged()
-            }
-        })
         with(monthsList){
+            val monthAdapter = MonthAdapter(object : MonthAdapter.AdapterCallback{
+                override fun setUpList(
+                    collection: TransactionCollection,
+                    transactionTextAdapter: TransactionTextAdapter
+                ) {
+                    mCallback.updateTransactions(collection, transactionTextAdapter)
+                }
+
+                override fun monthSelected(id: Long) {
+                    //TODO open month fragment
+                }
+
+            }, context, collections)
+            mCallback.fetchCollections(collections, monthAdapter)
             adapter = monthAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         }
@@ -101,12 +100,8 @@ class HomeFragment : Fragment(), MonthAdapter.AdapterCallback {
         }
 
         addReminder.setOnClickListener {
-            //TODO Add Reminders
+            //TODO Open Add Fragment
         }
-    }
-
-    override fun setUpList(recyclerView: RecyclerView, collectionId: Int) {
-        //TODO Add List
     }
 
 }

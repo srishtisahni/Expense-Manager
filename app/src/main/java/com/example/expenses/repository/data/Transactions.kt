@@ -14,13 +14,19 @@ import androidx.room.PrimaryKey
         childColumns = arrayOf("collectionId"),
         onDelete = ForeignKey.CASCADE)))
 data class Transactions(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
     val expenseTitle: String,
-    val collectionId: Int,
+    val collectionId: Long,
     val comments: String,
     val amount: Float,
     val date: Long,
     val type: Int,
     var completed: Boolean
-)
+) {
+    @PrimaryKey(autoGenerate = true)
+    var id: Long = 0
+
+    constructor(id: Long, expenseTitle: String, collectionId: Long, comments: String, amount: Float, date: Long, type: Int, completed: Boolean):
+            this(expenseTitle, collectionId, comments, amount, date, type, completed) {
+        this.id = id
+    }
+}
