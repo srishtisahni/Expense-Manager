@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.expenses.R
 import com.example.expenses.repository.data.Reminders
 import com.example.expenses.repository.data.TransactionCollection
+import com.example.expenses.repository.data.Transactions
 import com.example.expenses.ui.adapters.MonthAdapter
 import com.example.expenses.ui.adapters.ReminderAdapter
 import com.example.expenses.ui.adapters.TransactionTextAdapter
@@ -29,13 +31,13 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 class HomeFragment : Fragment(){
 
     private lateinit var rootLayout: View
+    private lateinit var mCallback: ActivityCallback
+
     private lateinit var balanceAmount: TextView
     private lateinit var remindersList: RecyclerView
     private lateinit var addReminder: FloatingActionButton
-    private lateinit var addMonth: CardView
+    private lateinit var addMonth: Button
     private lateinit var monthsList: RecyclerView
-
-    private lateinit var mCallback: ActivityCallback
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -73,7 +75,7 @@ class HomeFragment : Fragment(){
                     val builder = AlertDialog.Builder(context)
                     with(builder) {
                         setTitle("Complete Transaction")
-                        setMessage("Do you want to mark the Transaction as Completed?")
+                        setMessage("Do you want to mark the following Transaction as Completed?\n${reminder.expenseTitle}")
                         setPositiveButton("Yes", DialogInterface.OnClickListener{ _: DialogInterface, _: Int ->
                             mCallback.completeTransaction(reminder)
                         })
@@ -83,7 +85,22 @@ class HomeFragment : Fragment(){
                         show()
                     }
                 }
-            }, reminders)
+
+                override fun onLongClick(reminder: Reminders) {
+                    val builder = AlertDialog.Builder(context)
+                    with(builder) {
+                        setTitle("Delete Transaction")
+                        setMessage("Do you want to delete the following Transaction?\n${reminder.expenseTitle}")
+                        setPositiveButton("Yes", DialogInterface.OnClickListener{ _: DialogInterface, _: Int ->
+                            mCallback.deleteTransaction(reminder)
+                        })
+                        setNegativeButton("No", DialogInterface.OnClickListener{ _: DialogInterface, _: Int ->
+
+                        })
+                        show()
+                    }
+                }
+            }, context, reminders)
             mCallback.fetchReminders(reminders, reminderAdapter)
             adapter = reminderAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -93,15 +110,12 @@ class HomeFragment : Fragment(){
         val collections = mutableListOf<TransactionCollection>()
         with(monthsList){
             val monthAdapter = MonthAdapter(object : MonthAdapter.AdapterCallback{
-                override fun setUpList(
-                    collection: TransactionCollection,
-                    transactionTextAdapter: TransactionTextAdapter
-                ) {
-                    mCallback.updateTransactions(collection, transactionTextAdapter)
+                override fun setUpList(collectionId: Long, transactions: MutableList<Transactions>, transactionTextAdapter: TransactionTextAdapter) {
+                    mCallback.updateTransactions(collectionId, transactions, transactionTextAdapter)
                 }
 
-                override fun monthSelected(id: Long) {
-                    //TODO open month fragment
+                override fun onClick(id: Long) {
+                    mCallback.navigateToMonth(id)
                 }
 
             }, context, collections)

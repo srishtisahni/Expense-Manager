@@ -5,11 +5,11 @@ import android.os.Handler
 import android.os.HandlerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.expenses.Constants
 import com.example.expenses.repository.data.Reminders
 import com.example.expenses.repository.data.TransactionCollection
 import com.example.expenses.repository.data.Transactions
 import com.example.expenses.repository.room.ExpenseDatabase
-import java.util.*
 
 class ExpenseRepository private constructor(val context: Context) {
 
@@ -30,6 +30,8 @@ class ExpenseRepository private constructor(val context: Context) {
 
     fun getCollections() : LiveData<List<TransactionCollection>> = database.getDao().getCollections()
 
+    fun getCollection(collectionId: Long): LiveData<TransactionCollection> = database.getDao().getCollectionLive(collectionId)
+
     fun getTransactionsForExpense(expenseTitle: String): LiveData<List<Transactions>> = database.getDao().getTransactions(expenseTitle)
 
     fun getTransactions(collectionId: Long): LiveData<List<Transactions>> = database.getDao().getTransactions(collectionId)
@@ -49,11 +51,10 @@ class ExpenseRepository private constructor(val context: Context) {
     fun addTransaction(transaction: Transactions) {
         dbHandler.post {
             database.getDao().addTransaction(transaction)
-        }
-    }
-
-    fun updateCollection(collection: TransactionCollection) {
-        dbHandler.post {
+            val income = database.getDao().getBalanceFromType(transaction.collectionId, Constants.INCOME)
+            val expense = database.getDao().getBalanceFromType(transaction.collectionId, Constants.EXPENSE)
+            val collection = database.getDao().getCollection(transaction.collectionId)
+            collection.balanceAmount = income - expense
             database.getDao().updateCollection(collection)
         }
     }

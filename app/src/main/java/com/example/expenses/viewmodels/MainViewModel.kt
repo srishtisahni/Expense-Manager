@@ -21,6 +21,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val userDetails: MutableLiveData<UserDetails> = MutableLiveData()
     private val collectionTransactions: MutableMap<Long, LiveData<List<Transactions>>> = mutableMapOf()
+    private val collectionSet: MutableMap<Long, LiveData<TransactionCollection>> = mutableMapOf()
     private lateinit var reminders: LiveData<List<Reminders>>
     private lateinit var collections: LiveData<List<TransactionCollection>>
 
@@ -32,12 +33,17 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private fun fetchUserDetails() {
-        userDetails.value = UserDetails(
+        val user = UserDetails(
             sharedPref.getString(NAME, null),
             sharedPref.getFloat(SALARY, 0f),
             sharedPref.getFloat(BUDGET, 0f),
             sharedPref.getFloat(BALANCE, 0f)
         )
+        Constants.salary = user.salary
+        Constants.budget = user.budget
+        Constants.savings = user.salary - user.budget
+        Constants.balance = user.balance
+        userDetails.value = user
     }
 
     fun isOldUser(): Boolean = sharedPref.getBoolean(EXISTS, false)
@@ -83,6 +89,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         return null
     }
 
+    fun getUser(): LiveData<UserDetails> = userDetails
+
+    fun fetchCollection(collectionId: Long) : LiveData<TransactionCollection>{
+        if(collectionSet[collectionId] == null)
+            collectionSet[collectionId] = repository.getCollection(collectionId)
+        return collectionSet[collectionId]!!
+    }
+
     fun addSalaryTransaction(collection: TransactionCollection) {
         sharedPref.edit().putLong("${collection.month}/${collection.year}id",collection.id).apply()
         val calendar = Calendar.getInstance()
@@ -91,22 +105,19 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         repository.addTransaction(transactions)
     }
 
-    fun updateCollectionCost(collection: TransactionCollection) {
-        collection.updateBalance()
-        repository.updateCollection(collection)
-    }
-
     fun updateBalance(it: List<TransactionCollection>) {
         var balance = 0f
         it.forEach { collection ->
             balance += collection.balanceAmount
         }
+        Constants.balance = balance
+
+        sharedPref.edit().putFloat(BALANCE, balance).apply()
+
         val userDetails = this.userDetails.value!!
         userDetails.balance = balance
         this.userDetails.value = userDetails
     }
-
-    fun getUser(): LiveData<UserDetails> = userDetails
 
     fun addTransaction(transaction: Transactions) {
         repository.addTransaction(transaction)
@@ -121,6 +132,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         repository.deleteReminder(reminder)
         val transactions = Transactions(reminder, sharedPref.getLong("${calendar[Calendar.MONTH]}/${calendar[Calendar.YEAR]}id",-1))
         repository.addTransaction(transactions)
+    }
+
+    fun deleteTransaction(reminder: Reminders) {
+        repository.deleteReminder(reminder)
     }
 
 

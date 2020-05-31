@@ -135,7 +135,7 @@
             android:id="@+id/save"
             android:layout_width="160dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/button_solid"
+            android:background="@drawable/button_primary_dark"
             android:text="@string/save"
             android:textAllCaps="false"
             android:textColor="@color/colorPrimaryLight"

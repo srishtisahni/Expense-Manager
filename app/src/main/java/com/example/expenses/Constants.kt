@@ -6,6 +6,11 @@ import java.util.*
 
 class Constants {
     companion object{
+        var balance = 0f
+        var salary = 0f
+        var budget = 0f
+        var savings = 0f
+
         val INCOME = 1
         val EXPENSE = 2
         val dateFormat = SimpleDateFormat("dd/MM/yyyy")

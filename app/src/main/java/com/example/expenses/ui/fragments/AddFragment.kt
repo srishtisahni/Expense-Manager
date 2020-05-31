@@ -45,7 +45,6 @@ class AddFragment : Fragment() {
             title = findViewById(R.id.title)
             amount = findViewById(R.id.amount)
             date = findViewById(R.id.date)
-            date.text = Constants.dateFormat.format(Date(calendarInstance.timeInMillis))
             comment = findViewById(R.id.comments)
             income = findViewById(R.id.add_income)
             expense = findViewById(R.id.add_expense)
@@ -103,5 +102,4 @@ class AddFragment : Fragment() {
             mCallback = context
         collectionId = arguments?.getLong("collectionId")
     }
-
 }
