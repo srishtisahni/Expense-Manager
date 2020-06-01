@@ -4,15 +4,19 @@ This app is a simple expense manager which allows one to track their finances an
 
 ## Sample Images
 Login Screen <br/>
-![WhatsApp Image 2020-06-01 at 12 27 19 PM](https://user-images.githubusercontent.com/36541302/83384608-39383c80-a405-11ea-8801-495f144e2c66.jpeg| width=100)
+![Webp net-resizeimage (3)](https://user-images.githubusercontent.com/36541302/83385606-2e7ea700-a407-11ea-9e79-d624442a9328.jpg)
+<br/>
 <br/>
 Home Screen <br/>
-![WhatsApp Image 2020-06-01 at 12 27 20 PM](https://user-images.githubusercontent.com/36541302/83384663-5b31bf00-a405-11ea-99aa-75c48083da6d.jpeg| width=100)
-![WhatsApp Image 2020-06-01 at 12 40 06 PM](https://user-images.githubusercontent.com/36541302/83384667-5c62ec00-a405-11ea-9fd4-a22c993b1a9e.jpeg| width=100)
+![Webp net-resizeimage (1)](https://user-images.githubusercontent.com/36541302/83385523-0727da00-a407-11ea-87d0-60883224ad91.jpg)
+![Webp net-resizeimage (2)](https://user-images.githubusercontent.com/36541302/83385526-07c07080-a407-11ea-8be1-9d2023fda5ed.jpg)
+<br/>
 <br/>
 Collection Screen <br/>
-![WhatsApp Image 2020-06-01 at 12 27 19 PM (1)](https://user-images.githubusercontent.com/36541302/83384698-76043380-a405-11ea-86da-054551ce49b4.jpeg| width=100)
+![Webp net-resizeimage](https://user-images.githubusercontent.com/36541302/83385436-de074980-a406-11ea-8381-5b34d4fbd94e.jpg)
+<br/>
 <br/>
 Add Reminder/Expense <br/>
-![WhatsApp Image 2020-06-01 at 12 27 19 PM (2)](https://user-images.githubusercontent.com/36541302/83384739-89170380-a405-11ea-9d2e-3d7730b0a8fa.jpeg| width=100)
-![WhatsApp Image 2020-06-01 at 12 39 38 PM](https://user-images.githubusercontent.com/36541302/83384743-8a483080-a405-11ea-8d88-31163929b764.jpeg| width=100)
+![Webp net-resizeimage (4)](https://user-images.githubusercontent.com/36541302/83385785-769dc980-a407-11ea-84a8-309b2185f782.jpg)
+![Webp net-resizeimage (5)](https://user-images.githubusercontent.com/36541302/83385787-77cef680-a407-11ea-988e-6bf31c73b6b0.jpg)
+
