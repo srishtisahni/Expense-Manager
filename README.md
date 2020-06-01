@@ -15,10 +15,14 @@ Home Screen <br/>
 <br/>
 <br/>
 Collection Screen <br/>
+
 ![Webp net-resizeimage](https://user-images.githubusercontent.com/36541302/83385436-de074980-a406-11ea-8381-5b34d4fbd94e.jpg)
+
 <br/>
 <br/>
 Add Reminder/Expense <br/>
+
+
 ![Webp net-resizeimage (4)](https://user-images.githubusercontent.com/36541302/83385785-769dc980-a407-11ea-84a8-309b2185f782.jpg)
 ![Webp net-resizeimage (5)](https://user-images.githubusercontent.com/36541302/83385787-77cef680-a407-11ea-988e-6bf31c73b6b0.jpg)
 
