@@ -74,7 +74,7 @@ class CollectionFragment : Fragment() {
 
     fun updateDetails(collection: TransactionCollection) {
         month.text = "- ${Constants.getMonth(collection.month)}, ${collection.year} -"
-        balanceAmount.text = "${Constants.currencyFormat.format(Constants.balance)}"
+        balanceAmount.text = "${Constants.currencyFormat.format(collection.balanceAmount)}"
     }
 
     fun updateProgress(expense: Float, income: Float) {
