@@ -10,6 +10,8 @@ Login Screen <br/>
 Home Screen <br/>
 ![Webp net-resizeimage (1)](https://user-images.githubusercontent.com/36541302/83385523-0727da00-a407-11ea-87d0-60883224ad91.jpg)
 ![Webp net-resizeimage (2)](https://user-images.githubusercontent.com/36541302/83385526-07c07080-a407-11ea-8be1-9d2023fda5ed.jpg)
+![Webp net-resizeimage (6)](https://user-images.githubusercontent.com/36541302/83386940-7ef70400-a409-11ea-8a76-72bd22dff69e.jpg)
+
 <br/>
 <br/>
 Collection Screen <br/>
