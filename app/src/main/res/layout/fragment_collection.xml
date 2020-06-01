@@ -146,7 +146,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
             android:text="@string/add_transaction"
-            android:background="@drawable/button_primary"
+            android:background="@drawable/button_dark"
             android:textSize="24sp"
             android:textAllCaps="false"
             android:textColor="@color/colorPrimaryLight"

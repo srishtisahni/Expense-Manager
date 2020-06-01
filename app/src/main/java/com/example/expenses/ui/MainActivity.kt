@@ -40,9 +40,8 @@ class MainActivity : AppCompatActivity(), ActivityCallback {
 
         if(model.isOldUser())
             navigateTo(R.id.action_loginFragment_to_homeFragment)
-        else {
+        else
             supportActionBar?.hide()
-        }
     }
 
     private fun navigateTo(navigationId: Int, bundle: Bundle? = null) {

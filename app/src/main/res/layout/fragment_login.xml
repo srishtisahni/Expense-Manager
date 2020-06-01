@@ -9,7 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimary">
+        android:background="@color/colorPrimaryDark">
 
         <TextView
             android:id="@+id/textView"
@@ -135,7 +135,7 @@
             android:id="@+id/save"
             android:layout_width="160dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/button_primary_dark"
+            android:background="@drawable/button"
             android:text="@string/save"
             android:textAllCaps="false"
             android:textColor="@color/colorPrimaryLight"
