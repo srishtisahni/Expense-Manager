@@ -1,6 +1,5 @@
 package com.example.expenses.ui.fragments
 
-import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -44,7 +43,7 @@ class LoginFragment : Fragment() {
             val budgetEntry = budget.text.toString().toFloatOrNull()
 
             if(nameEntry.isNotEmpty() && incomeEntry!=null && budgetEntry!=null)
-                mCallback.save(nameEntry, incomeEntry, budgetEntry)
+                mCallback.saveUserDetails(nameEntry, incomeEntry, budgetEntry)
             else
                 Toast.makeText(context, "INVALID INPUT", Toast.LENGTH_SHORT).show()
         }

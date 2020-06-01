@@ -22,28 +22,34 @@
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_homeFragment_to_monthFragment"
-            app:destination="@id/monthFragment"
+            app:destination="@id/collectionFragment"
             app:popUpTo="@id/homeFragment" />
         <action
-            android:id="@+id/action_homeFragment_to_addFragment"
-            app:destination="@id/addFragment"
+            android:id="@+id/action_homeFragment_to_reminderFragment"
+            app:destination="@id/reminderFragment"
             app:popUpTo="@id/homeFragment" />
     </fragment>
     <fragment
-        android:id="@+id/monthFragment"
-        android:name="com.example.expenses.ui.fragments.MonthFragment"
+        android:id="@+id/collectionFragment"
+        android:name="com.example.expenses.ui.fragments.CollectionFragment"
         android:label="fragment_month"
-        tools:layout="@layout/fragment_month">
+        tools:layout="@layout/fragment_collection">
         <argument
             android:name="collectionId"
             app:argType="long" />
         <action
-            android:id="@+id/action_monthFragment_to_addFragment"
+            android:id="@+id/action_collectionFragment_to_addFragment"
             app:destination="@id/addFragment"
-            app:popUpTo="@id/monthFragment" />
+            app:popUpTo="@id/collectionFragment" />
     </fragment>
     <fragment
         android:id="@+id/addFragment"
         android:name="com.example.expenses.ui.fragments.AddFragment"
+        tools:layout="@layout/fragment_add"
+        android:label="AddFragment" />
+    <fragment
+        android:id="@+id/reminderFragment"
+        android:name="com.example.expenses.ui.fragments.AddFragment"
+        tools:layout="@layout/fragment_add"
         android:label="AddFragment" />
 </navigation>

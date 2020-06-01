@@ -2,30 +2,24 @@ package com.example.expenses.ui
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.example.expenses.Constants
 import com.example.expenses.R
-import com.example.expenses.repository.ExpenseRepository
 import com.example.expenses.repository.data.Reminders
 import com.example.expenses.repository.data.TransactionCollection
 import com.example.expenses.repository.data.Transactions
 import com.example.expenses.repository.data.UserDetails
-import com.example.expenses.ui.adapters.MonthAdapter
-import com.example.expenses.ui.adapters.ReminderAdapter
-import com.example.expenses.ui.adapters.TransactionAdapter
-import com.example.expenses.ui.adapters.TransactionTextAdapter
+import com.example.expenses.ui.adapters.*
 import com.example.expenses.ui.callbacks.ActivityCallback
-import com.example.expenses.ui.fragments.MonthFragment
+import com.example.expenses.ui.fragments.CollectionFragment
 import com.example.expenses.viewmodels.MainViewModel
 import java.util.*
 
@@ -54,8 +48,8 @@ class MainActivity : AppCompatActivity(), ActivityCallback {
     private fun navigateTo(navigationId: Int, bundle: Bundle? = null) {
         navigationController.navigate(navigationId, bundle)
         when(navigationId) {
-            R.id.action_monthFragment_to_addFragment -> setAppTitle(R.string.add_transaction)
-            R.id.action_homeFragment_to_addFragment -> {
+            R.id.action_collectionFragment_to_addFragment -> setAppTitle(R.string.add_transaction)
+            R.id.action_homeFragment_to_reminderFragment -> {
                 setAppTitle(R.string.add_reminder)
             }
             else -> {
@@ -74,28 +68,15 @@ class MainActivity : AppCompatActivity(), ActivityCallback {
 
     override fun onSupportNavigateUp() = navigationController.navigateUp()
 
-    override fun save(name: String, salary: Float, budget: Float) {
+    override fun saveUserDetails(name: String, salary: Float, budget: Float) {
         model.updateUserInfo(UserDetails( name, salary, budget, 0f))
         navigateTo(R.id.action_loginFragment_to_homeFragment)
     }
 
-    override fun fetchReminders(reminders: MutableList<Reminders>, reminderAdapter: ReminderAdapter) {
-        model.getReminders().observe(this, androidx.lifecycle.Observer {
-            if(it != null) {
-                reminders.clear()
-                reminders.addAll(it)
-                reminderAdapter.notifyDataSetChanged()
-            }
-        })
-    }
-
-    override fun fetchCollections(collections: MutableList<TransactionCollection>, monthAdapter: MonthAdapter) {
-        model.getCollections().observe(this, androidx.lifecycle.Observer {
+    override fun setBalance(balanceAmount: TextView) {
+        model.getUser().observe(this, androidx.lifecycle.Observer {
             if(it!=null) {
-                collections.clear()
-                collections.addAll(it)
-                monthAdapter.notifyDataSetChanged()
-                model.updateBalance(it)
+                balanceAmount.text = Constants.currencyFormat.format(it.balance)
             }
         })
     }
@@ -114,7 +95,54 @@ class MainActivity : AppCompatActivity(), ActivityCallback {
         return true
     }
 
-    override fun updateTransactions(collectionId: Long, transactions: MutableList<Transactions>, transactionTextAdapter: TransactionTextAdapter) {
+    override fun fetchCollections(collections: MutableList<TransactionCollection>, collectionAdapter: CollectionAdapter) {
+        model.getCollections().observe(this, androidx.lifecycle.Observer {
+            if(it!=null) {
+                collections.clear()
+                collections.addAll(it)
+                collectionAdapter.notifyDataSetChanged()
+                model.updateBalance(it)
+            }
+        })
+    }
+
+    override fun fetchCollection(collectionId: Long, collectionFragment: CollectionFragment){
+        model.fetchCollection(collectionId).observe(this, androidx.lifecycle.Observer {
+            collectionFragment.updateDetails(it)
+        })
+    }
+
+    override fun addReminder(reminders: Reminders) {
+        model.addReminder(reminders)
+        navigationController.popBackStack(R.id.homeFragment, false)
+        setAppTitle(R.string.app_name)
+    }
+
+    override fun fetchReminders(reminders: MutableList<Reminders>, reminderAdapter: ReminderAdapter) {
+        model.getReminders().observe(this, androidx.lifecycle.Observer {
+            if(it != null) {
+                reminders.clear()
+                reminders.addAll(it)
+                reminderAdapter.notifyDataSetChanged()
+            }
+        })
+    }
+
+    override fun completeTransaction(reminder: Reminders) {
+        model.completeTransaction(reminder)
+    }
+
+    override fun deleteReminder(reminder: Reminders) {
+        model.deleteReminder(reminder)
+    }
+
+    override fun addTransactionForCollection(transactions: Transactions) {
+        model.addTransaction(transactions)
+        navigationController.popBackStack(R.id.collectionFragment, false)
+        setAppTitle(R.string.app_name)
+    }
+
+    override fun fetchTransactionsForHome(collectionId: Long, transactions: MutableList<Transactions>, transactionTextAdapter: TransactionTextAdapter) {
         model.fetchTransactions(collectionId).observe(this, androidx.lifecycle.Observer {
             if (it!=null) {
                 transactions.clear()
@@ -124,8 +152,7 @@ class MainActivity : AppCompatActivity(), ActivityCallback {
         })
     }
 
-
-    override fun fetchTransactions(collectionId: Long, transactions: MutableList<Transactions>, adapter: TransactionAdapter, monthFragment: MonthFragment) {
+    override fun fetchTransactionsCollection(collectionId: Long, transactions: MutableList<Transactions>, adapter: TransactionAdapter, monthFragment: CollectionFragment) {
         model.fetchTransactions(collectionId).observe(this, androidx.lifecycle.Observer {
             if (it!=null) {
                 transactions.clear()
@@ -144,58 +171,35 @@ class MainActivity : AppCompatActivity(), ActivityCallback {
         })
     }
 
-    override fun setBalance(balanceAmount: TextView) {
-        model.getUser().observe(this, androidx.lifecycle.Observer {
-            if(it!=null) {
-                balanceAmount.text = Constants.currencyFormat.format(it.balance)
-            }
-        })
+    override fun deleteTransaction(transactions: Transactions) {
+        model.deleteTransaction(transactions)
     }
 
     override fun navigateToRemindersFragment() {
-        navigateTo(R.id.action_homeFragment_to_addFragment)
+        navigateTo(R.id.action_homeFragment_to_reminderFragment)
     }
 
-    override fun addTransactionForCollection(transactions: Transactions) {
-        model.addTransaction(transactions)
-        navigationController.popBackStack(R.id.monthFragment, false)
-        setAppTitle(R.string.app_name)
-
+    override fun navigateToCollectionFragment(collectionId: Long) {
+        navigateTo(R.id.action_homeFragment_to_monthFragment, bundleOf("collectionId" to collectionId))
     }
 
-    override fun addReminder(reminders: Reminders) {
-        model.addReminder(reminders)
-        navigationController.popBackStack(R.id.homeFragment, false)
-        setAppTitle(R.string.app_name)
-    }
-
-    override fun completeTransaction(reminder: Reminders) {
-        model.completeTransaction(reminder)
-    }
-
-    override fun deleteTransaction(reminder: Reminders) {
-        model.deleteTransaction(reminder)
-    }
-
-    override fun fetchCollection(collectionId: Long, monthFragment: MonthFragment){
-        model.fetchCollection(collectionId).observe(this, androidx.lifecycle.Observer {
-            monthFragment.updateDetails(it)
-        })
-    }
-
-    override fun navigateToMonth(id: Long) {
-        navigateTo(R.id.action_homeFragment_to_monthFragment, bundleOf("collectionId" to id))
-    }
-
-    override fun navigateToAdd(collectionId: Long) {
-        navigateTo(R.id.action_monthFragment_to_addFragment, bundleOf("collectionId" to collectionId))
+    override fun navigateToAddFragment(collectionId: Long) {
+        navigateTo(R.id.action_collectionFragment_to_addFragment, bundleOf("collectionId" to collectionId))
     }
 
     override fun onBackPressed() {
-        val current = navigationController.currentDestination
-        if(current?.id == R.id.monthFragment)
-            navigationController.popBackStack(R.id.homeFragment, false)
-        else
-            Log.e("NAME", current?.navigatorName)
+        when(navigationController.currentDestination?.id) {
+            R.id.addFragment -> {
+                navigationController.popBackStack(R.id.collectionFragment, false)
+                setAppTitle(R.string.app_name)
+            }
+            R.id.collectionFragment, R.id.reminderFragment -> {
+                navigationController.popBackStack(R.id.homeFragment, false)
+                setAppTitle(R.string.app_name)
+            }
+            else -> {
+                super.onBackPressed()
+            }
+        }
     }
 }

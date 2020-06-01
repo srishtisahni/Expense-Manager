@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -19,7 +18,7 @@ import com.example.expenses.R
 import com.example.expenses.repository.data.Reminders
 import com.example.expenses.repository.data.TransactionCollection
 import com.example.expenses.repository.data.Transactions
-import com.example.expenses.ui.adapters.MonthAdapter
+import com.example.expenses.ui.adapters.CollectionAdapter
 import com.example.expenses.ui.adapters.ReminderAdapter
 import com.example.expenses.ui.adapters.TransactionTextAdapter
 import com.example.expenses.ui.callbacks.ActivityCallback
@@ -76,12 +75,12 @@ class HomeFragment : Fragment(){
                     with(builder) {
                         setTitle("Complete Transaction")
                         setMessage("Do you want to mark the following Transaction as Completed?\n${reminder.expenseTitle}")
-                        setPositiveButton("Yes", DialogInterface.OnClickListener{ _: DialogInterface, _: Int ->
+                        setPositiveButton("Yes") { _: DialogInterface, _: Int ->
                             mCallback.completeTransaction(reminder)
-                        })
-                        setNegativeButton("No", DialogInterface.OnClickListener{ _: DialogInterface, _: Int ->
+                        }
+                        setNegativeButton("No") { _: DialogInterface, _: Int ->
 
-                        })
+                        }
                         show()
                     }
                 }
@@ -91,12 +90,12 @@ class HomeFragment : Fragment(){
                     with(builder) {
                         setTitle("Delete Transaction")
                         setMessage("Do you want to delete the following Transaction?\n${reminder.expenseTitle}")
-                        setPositiveButton("Yes", DialogInterface.OnClickListener{ _: DialogInterface, _: Int ->
-                            mCallback.deleteTransaction(reminder)
-                        })
-                        setNegativeButton("No", DialogInterface.OnClickListener{ _: DialogInterface, _: Int ->
+                        setPositiveButton("Yes") { _: DialogInterface, _: Int ->
+                            mCallback.deleteReminder(reminder)
+                        }
+                        setNegativeButton("No") { _: DialogInterface, _: Int ->
 
-                        })
+                        }
                         show()
                     }
                 }
@@ -109,13 +108,13 @@ class HomeFragment : Fragment(){
         //months
         val collections = mutableListOf<TransactionCollection>()
         with(monthsList){
-            val monthAdapter = MonthAdapter(object : MonthAdapter.AdapterCallback{
+            val monthAdapter = CollectionAdapter(object : CollectionAdapter.AdapterCallback{
                 override fun setUpList(collectionId: Long, transactions: MutableList<Transactions>, transactionTextAdapter: TransactionTextAdapter) {
-                    mCallback.updateTransactions(collectionId, transactions, transactionTextAdapter)
+                    mCallback.fetchTransactionsForHome(collectionId, transactions, transactionTextAdapter)
                 }
 
                 override fun onClick(id: Long) {
-                    mCallback.navigateToMonth(id)
+                    mCallback.navigateToCollectionFragment(id)
                 }
 
             }, context, collections)

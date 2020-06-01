@@ -1,6 +1,8 @@
 package com.example.expenses.ui.fragments
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,7 +12,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,7 +22,7 @@ import com.example.expenses.repository.data.Transactions
 import com.example.expenses.ui.adapters.TransactionAdapter
 import com.example.expenses.ui.callbacks.ActivityCallback
 
-class MonthFragment : Fragment() {
+class CollectionFragment : Fragment() {
 
     private lateinit var rootLayout: View
     private lateinit var mCallback: ActivityCallback
@@ -40,7 +41,7 @@ class MonthFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        rootLayout = inflater.inflate(R.layout.fragment_month, container, false)
+        rootLayout = inflater.inflate(R.layout.fragment_collection, container, false)
 
         with(rootLayout) {
             month = findViewById(R.id.month)
@@ -54,7 +55,7 @@ class MonthFragment : Fragment() {
         }
 
         addTransaction.setOnClickListener {
-            mCallback.navigateToAdd(collectionId!!)
+            mCallback.navigateToAddFragment(collectionId!!)
         }
 
         mCallback.fetchCollection(collectionId!!, this)
@@ -91,10 +92,25 @@ class MonthFragment : Fragment() {
     private fun setUpAdapter() {
         val transactions = mutableListOf<Transactions>()
         with(expenseList) {
-            val transactionsAdapter = TransactionAdapter(transactions)
+            val transactionsAdapter = TransactionAdapter( object: TransactionAdapter.ItemClickCallback {
+                override fun onLongClick(transactions: Transactions) {
+                    val builder = AlertDialog.Builder(context)
+                    with(builder) {
+                        setTitle("Delete Transaction")
+                        setMessage("Do you want to delete the following Transaction?\n${transactions.expenseTitle}")
+                        setPositiveButton("Yes") { _: DialogInterface, _: Int ->
+                            mCallback.deleteTransaction(transactions)
+                        }
+                        setNegativeButton("No") { _: DialogInterface, _: Int ->
+
+                        }
+                        show()
+                    }
+                }
+            },transactions)
             adapter = transactionsAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            mCallback.fetchTransactions(collectionId!!, transactions, transactionsAdapter, this@MonthFragment)
+            mCallback.fetchTransactionsCollection(collectionId!!, transactions, transactionsAdapter, this@CollectionFragment)
         }
     }
 }

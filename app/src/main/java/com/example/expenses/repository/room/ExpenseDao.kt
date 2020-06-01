@@ -8,11 +8,21 @@ import com.example.expenses.repository.data.Transactions
 
 @Dao
 interface ExpenseDao {
-    @Query("SELECT * from Transactions where expenseTitle = :expenseTitle")
-    fun getTransactions(expenseTitle: String): LiveData<List<Transactions>>
+
+    @Insert
+    fun addCollection(collection: TransactionCollection): Long
+
+    @Insert
+    fun addTransaction(transaction: Transactions): Long
+
+    @Insert
+    fun addReminder(reminder: Reminders): Long
 
     @Query("SELECT * from Reminders ORDER BY date")
     fun getReminders(): LiveData<List<Reminders>>
+
+    @Query("SELECT * from Transactions where UPPER(expenseTitle) = :expenseTitle")
+    fun getTransactions(expenseTitle: String): LiveData<List<Transactions>>
 
     @Query("SELECT * from Transactions where collectionId = :collectionId order by Date")
     fun getTransactions(collectionId: Long): LiveData<List<Transactions>>
@@ -32,15 +42,9 @@ interface ExpenseDao {
     @Update
     fun updateCollection(collection: TransactionCollection)
 
-    @Insert
-    fun addCollection(collection: TransactionCollection): Long
-
-    @Insert
-    fun addTransaction(transaction: Transactions): Long
-
-    @Insert
-    fun addReminder(reminder: Reminders): Long
-
     @Delete
     fun deleteReminder(reminder: Reminders)
+
+    @Delete
+    fun deleteTransaction(transactions: Transactions)
 }

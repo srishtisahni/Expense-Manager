@@ -28,15 +28,6 @@ class ExpenseRepository private constructor(val context: Context) {
         }
     }
 
-    fun getCollections() : LiveData<List<TransactionCollection>> = database.getDao().getCollections()
-
-    fun getCollection(collectionId: Long): LiveData<TransactionCollection> = database.getDao().getCollectionLive(collectionId)
-
-    fun getTransactionsForExpense(expenseTitle: String): LiveData<List<Transactions>> = database.getDao().getTransactions(expenseTitle)
-
-    fun getTransactions(collectionId: Long): LiveData<List<Transactions>> = database.getDao().getTransactions(collectionId)
-
-    fun getReminders(): LiveData<List<Reminders>> = database.getDao().getReminders()
 
     fun addCollection(transactionCollection: TransactionCollection) : LiveData<TransactionCollection> {
         val transaction = MutableLiveData<TransactionCollection>()
@@ -51,11 +42,7 @@ class ExpenseRepository private constructor(val context: Context) {
     fun addTransaction(transaction: Transactions) {
         dbHandler.post {
             database.getDao().addTransaction(transaction)
-            val income = database.getDao().getBalanceFromType(transaction.collectionId, Constants.INCOME)
-            val expense = database.getDao().getBalanceFromType(transaction.collectionId, Constants.EXPENSE)
-            val collection = database.getDao().getCollection(transaction.collectionId)
-            collection.balanceAmount = income - expense
-            database.getDao().updateCollection(collection)
+            updateExpense(transaction.collectionId)
         }
     }
 
@@ -65,9 +52,35 @@ class ExpenseRepository private constructor(val context: Context) {
         }
     }
 
+    fun getReminders(): LiveData<List<Reminders>> = database.getDao().getReminders()
+
+    fun getTransactions(expenseTitle: String): LiveData<List<Transactions>> = database.getDao().getTransactions(expenseTitle)
+
+    fun getTransactions(collectionId: Long): LiveData<List<Transactions>> = database.getDao().getTransactions(collectionId)
+
+    fun getCollections() : LiveData<List<TransactionCollection>> = database.getDao().getCollections()
+
+    fun getCollection(collectionId: Long): LiveData<TransactionCollection> = database.getDao().getCollectionLive(collectionId)
+
+    private fun updateExpense(collectionId: Long) {
+        val income = database.getDao().getBalanceFromType(collectionId, Constants.INCOME)
+        val expense = database.getDao().getBalanceFromType(collectionId, Constants.EXPENSE)
+        val collection = database.getDao().getCollection(collectionId)
+        collection.balanceAmount = income - expense
+        database.getDao().updateCollection(collection)
+    }
+
     fun deleteReminder(reminder: Reminders) {
         dbHandler.post {
             database.getDao().deleteReminder(reminder)
         }
     }
+
+    fun deleteTransaction(transaction: Transactions) {
+        dbHandler.post {
+            database.getDao().deleteTransaction(transaction)
+            updateExpense(transaction.collectionId)
+        }
+    }
+
 }

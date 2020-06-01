@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.expenses.Constants
 import com.example.expenses.R
@@ -69,11 +70,27 @@ class AddFragment : Fragment() {
             startTime.show()
         }
         income.setOnClickListener {
-            saveValues(Constants.INCOME)
+            if(dataIsComplete())
+                saveValues(Constants.INCOME)
+            else
+                Toast.makeText(context, "Incomplete Information", Toast.LENGTH_SHORT).show()
         }
         expense.setOnClickListener {
-            saveValues(Constants.EXPENSE)
+            if(dataIsComplete())
+                saveValues(Constants.EXPENSE)
+            else
+                Toast.makeText(context, "Incomplete Information", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun dataIsComplete(): Boolean {
+        if(title.text.toString().isEmpty())
+            return false
+        if(amount.text.toString().toFloat() < 0)
+            return false
+        if(date.text.toString().isEmpty())
+            return false
+        return true
     }
 
     private fun saveValues(type: Int) {

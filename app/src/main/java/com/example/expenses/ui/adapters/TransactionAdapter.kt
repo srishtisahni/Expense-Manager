@@ -12,7 +12,7 @@ import com.example.expenses.R
 import com.example.expenses.repository.data.Transactions
 import java.util.*
 
-class TransactionAdapter(private val list: List<Transactions>) : ListAdapter<Transactions, TransactionAdapter.TransactionViewHolder>(DiffCallback()) {
+class TransactionAdapter(private val mCallback: ItemClickCallback, private val list: List<Transactions>) : ListAdapter<Transactions, TransactionAdapter.TransactionViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TransactionViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.list_item, parent, false)
@@ -21,24 +21,29 @@ class TransactionAdapter(private val list: List<Transactions>) : ListAdapter<Tra
 
     override fun onBindViewHolder(holder: TransactionViewHolder, position: Int) {
         val item = list[position]
+        holder.itemView.setOnLongClickListener {
+            mCallback.onLongClick(item)
+            true
+        }
+
         if(item.type == Constants.INCOME) {
             holder.expenseCard.visibility = View.GONE
-            holder.incomeAmount.text = "${Constants.currencyFormat.format(item.amount)}"
+            holder.incomeAmount.text = Constants.currencyFormat.format(item.amount)
             holder.incomeTitle.text = item.expenseTitle
             if(item.comments.isEmpty())
                 holder.incomeComment.visibility = View.GONE
             else
                 holder.incomeComment.text = item.comments
-            holder.incomeDate.text = "${Constants.dateFormat.format(Date(item.date))}"
+            holder.incomeDate.text = Constants.dateFormat.format(Date(item.date))
         } else {
             holder.incomeCard.visibility = View.GONE
-            holder.expenseAmount.text = "${Constants.currencyFormat.format(item.amount)}"
+            holder.expenseAmount.text = Constants.currencyFormat.format(item.amount)
             holder.expenseTitle.text = item.expenseTitle
             if(item.comments.isEmpty())
                 holder.expenseComment.visibility = View.GONE
             else
                 holder.expenseComment.text = item.comments
-            holder.expenseDate.text = "${Constants.dateFormat.format(Date(item.date))}"
+            holder.expenseDate.text = Constants.dateFormat.format(Date(item.date))
         }
     }
 
@@ -66,5 +71,9 @@ class TransactionAdapter(private val list: List<Transactions>) : ListAdapter<Tra
     class DiffCallback: DiffUtil.ItemCallback<Transactions>() {
         override fun areItemsTheSame(oldItem: Transactions, newItem: Transactions): Boolean = oldItem.id == newItem.id
         override fun areContentsTheSame(oldItem: Transactions, newItem: Transactions): Boolean = oldItem == newItem
+    }
+
+    interface ItemClickCallback {
+        fun onLongClick(transactions: Transactions)
     }
 }

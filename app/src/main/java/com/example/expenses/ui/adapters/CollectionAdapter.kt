@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,7 +16,7 @@ import com.example.expenses.R
 import com.example.expenses.repository.data.TransactionCollection
 import com.example.expenses.repository.data.Transactions
 
-class MonthAdapter(private val mCallback: AdapterCallback, private val context: Context, private val list: List<TransactionCollection>) : ListAdapter<TransactionCollection, MonthAdapter.MonthViewHolder>(DiffCallback()) {
+class CollectionAdapter(private val mCallback: AdapterCallback, private val context: Context, private val list: List<TransactionCollection>) : ListAdapter<TransactionCollection, CollectionAdapter.MonthViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MonthViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.list_item_month, parent, false)

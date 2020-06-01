@@ -21,6 +21,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val userDetails: MutableLiveData<UserDetails> = MutableLiveData()
     private val collectionTransactions: MutableMap<Long, LiveData<List<Transactions>>> = mutableMapOf()
+    private val expenseTransactions: MutableMap<String, LiveData<List<Transactions>>> = mutableMapOf()
     private val collectionSet: MutableMap<Long, LiveData<TransactionCollection>> = mutableMapOf()
     private lateinit var reminders: LiveData<List<Reminders>>
     private lateinit var collections: LiveData<List<TransactionCollection>>
@@ -79,6 +80,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         return collectionTransactions[collectionId]!!
     }
 
+    fun fetchTransactions(expenseTitle: String): LiveData<List<Transactions>> {
+        if(expenseTransactions[expenseTitle.toUpperCase()] == null)
+            expenseTransactions[expenseTitle.toUpperCase()] = repository.getTransactions(expenseTitle)
+        return expenseTransactions[expenseTitle.toUpperCase()]!!
+    }
+
     fun addCollection(timeInMillis: Long): LiveData<TransactionCollection>? {
         val calendar = Calendar.getInstance()
         calendar.time = Date(timeInMillis)
@@ -134,8 +141,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         repository.addTransaction(transactions)
     }
 
-    fun deleteTransaction(reminder: Reminders) {
+    fun deleteReminder(reminder: Reminders) {
         repository.deleteReminder(reminder)
+    }
+
+    fun deleteTransaction(transactions: Transactions) {
+        repository.deleteTransaction(transactions)
     }
 
 
